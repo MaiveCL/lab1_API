@@ -20,7 +20,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(product_params)
+    @product = current_user.products.build(product_params)
     if @product.save
       redirect_to @product
     else
@@ -50,7 +50,7 @@ class ProductsController < ApplicationController
   # protection contre les envoies indésirables pour create et update
   private
     def product_params
-      params.expect(product: [ :name, :description ])
+      params.expect(product: [ :name, :description, :featured_image ])
     end
 
     def set_product

@@ -52,7 +52,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_234914) do
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
+    t.bigint "productable_id"
+    t.string "productable_type"
     t.datetime "updated_at", null: false
+    t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
