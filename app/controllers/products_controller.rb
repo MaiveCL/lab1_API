@@ -4,7 +4,8 @@ class ProductsController < ApplicationController
   # before_action :authenticate_user!, only: %i[ create edit update destroy ]
     # seulement le moment de confirmer la création était bloqué (la page affichait)
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[ show edit update destroy update ]
+  before_action :authorize_user!, only: %i[ edit update destroy ]
 
   def index
     @products = Product.all
@@ -34,7 +35,13 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product = Product.find(params[:id])
+    # Vérifie si le FORMULAIRE contient une nouvelle image pour le produit
+    if params[:product][:featured_image].present?
+      # Alors Si le produit avait déjà une image attachée, on la supprime
+      @product.featured_image.purge if @product.featured_image.attached?
+  end
+
+    # Met à jour le produit avec tous les paramètres envoyés par le formulaire
     if @product.update(product_params)
       redirect_to @product
     else
@@ -57,6 +64,10 @@ class ProductsController < ApplicationController
       @product = Product.find(params[:id])
     end
 
+    def authorize_user!
+    unless @product.productable == current_user
+      redirect_to products_path, alert: "Ce produit ne vous appartient pas!"
+    end
 end
 
-# 10.6.1. Extracting Partials
+end

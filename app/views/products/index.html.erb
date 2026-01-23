@@ -1,3 +1,9 @@
+<% if flash.any? %>
+  <script>
+    alert("<%= j flash.map { |type, msg| msg }.join('\n') %>");
+  </script>
+<% end %>
+
 <% if user_signed_in? %>
   <%= link_to current_user.email, edit_user_registration_path %>
   |
@@ -26,3 +32,4 @@
 <% debug @products %>
 <%# ============================== %>
 <% debug @product %>
+
