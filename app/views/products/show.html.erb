@@ -1,4 +1,4 @@
-<%= image_tag @product.featured_image if @product.featured_image.attached? %>
+<%= image_tag @product.featured_image, style: "max-width: 95vw; max-height: 95vh; object-fit: contain;" if @product.featured_image.attached? %>
 
 <h1><%= @product.name %></h1>
 <%= @product.description %>

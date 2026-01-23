@@ -4,16 +4,15 @@ class ProductsController < ApplicationController
   # before_action :authenticate_user!, only: %i[ create edit update destroy ]
     # seulement le moment de confirmer la création était bloqué (la page affichait)
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :set_product, only: %i[ show edit update destroy update ]
-  before_action :authorize_user!, only: %i[ edit update destroy ]
+  before_action :set_product, only: %i[ edit update destroy ]
 
   def index
     @products = Product.all
   end
 
   def show
-    # @product = Product.find(params[:id])
-    # remplace la répétition par un before_action
+    @product = Product.find(params[:id])
+
   end
 
   def new
@@ -62,12 +61,9 @@ class ProductsController < ApplicationController
 
     def set_product
       @product = Product.find(params[:id])
+      
+      unless @product.productable == current_user
+        redirect_to products_path, alert: "Ce produit ne vous appartient pas!"
+      end
     end
-
-    def authorize_user!
-    unless @product.productable == current_user
-      redirect_to products_path, alert: "Ce produit ne vous appartient pas!"
-    end
-end
-
 end
