@@ -1,9 +1,22 @@
-<%= image_tag @product.featured_image, style: "max-width: 95vw; max-height: 95vh; object-fit: contain;" if @product.featured_image.attached? %>
+<%# <%= image_tag @product.featured_image, style: "max-width: 95vw; max-height: 95vh; object-fit: contain;" if @product.featured_image.attached? %>
+<% if @product.image_description&.image&.attached? %>
+  <%= image_tag url_for(@product.image_description.image), style: "max-width: 95vw; max-height: 95vh; object-fit: contain;" %>
+<% end %>
 
 <h1><%= @product.name %></h1>
-<%= @product.description %>
+
+<%# <%= @product.description %>
+<%# NE FONCTIONNE PAS !!!! RICH TEXT EST CASSÉ !!! %>
+<%# pour le faire fonctionner il faut installer ceci en root dans la vm : apt install libvips libvips-dev %>
+  <div class="rich-text-content">
+    <%= @product.description %>
+  </div>
+
 <p>Créé par : <%= @product.productable.email %></p>
 
 <%= link_to "Back", products_path %>
-<%= link_to "Edit", edit_product_path(@product) %>
-<%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+
+<% if @product.productable == current_user %>
+  <%= link_to "Edit", edit_product_path(@product) %>
+  <%= button_to "Delete", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+<% end %>

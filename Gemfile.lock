@@ -413,6 +413,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  mini_magick
   mysql2 (~> 0.5)
   propshaft
   puma (>= 5.0)

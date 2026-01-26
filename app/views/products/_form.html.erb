@@ -12,11 +12,19 @@
     <%= form.label :description, style: "display: block" %>
     <%= form.rich_textarea :description %>
   </div>
+  
 
   <div>
-    <%= form.label :featured_image, style: "display: block" %>
-    <%= form.file_field :featured_image, accept: "image/*" %>
+    <%= form.fields_for :image_description do |img| %>
+      <%= img.file_field :image, accept: "image/*" %>
+
+      <% if img.object.image.attached? %>
+        <p>Image actuelle :</p>
+        <%= image_tag url_for(@product.image_description.image), style: "max-width: 300px;" %>
+      <% end %>
+    <% end %>
   </div>
+
 
   <div>
     <%= form.submit %>
