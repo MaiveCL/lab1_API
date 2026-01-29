@@ -1,15 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-tshirt:
-  name: T-Shirt
-  inventory_count: 15
-
-pant:
-  name: "pant"
-  description: "Cool"
-  inventory_count: 10
-
-hat:
-  name: "hat"
-  description: "Stylée"
+one_product:
+  name: "Produit de test"
   inventory_count: 5
+  # productable_type: "User"
+  # productable_id: one
+  productable: one_user (User)
+
+no_stock:
+  name: "Produit épuisé"
+  inventory_count: 0
+  # productable_type: "User"
+  # productable_id: one
+  productable: one_user (User)

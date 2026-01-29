@@ -17,7 +17,11 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @products }
+      format.json {
+        render json: @products, include: {
+          image_description: { methods: :image_url }
+        }, methods: :description_text
+      }
     end
   end
 
@@ -31,7 +35,11 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @product }
+      format.json {
+        render json: @product, include: {
+          image_description: { methods: :image_url }
+        }, methods: :description_text
+      }
     end
   end
 

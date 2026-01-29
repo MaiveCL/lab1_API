@@ -9,6 +9,9 @@ class Product < ApplicationRecord
 
     validates :inventory_count, numericality: { greater_than_or_equal_to: 0 }
 
+    def description_text
+      description.to_s
+    end
 
     # déplacement dans le module :
     include Notifications
