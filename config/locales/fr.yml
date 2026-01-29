@@ -1,0 +1,5 @@
+fr:
+  # products: "produits"
+  products:
+    index:
+      title: "Produits" # appelé via .title

@@ -29,3 +29,8 @@
 
 en:
   hello: "Hello world"
+  # products: "products" 
+  # OU :
+  products:
+    index:
+      title: "Products" # appelé via .title

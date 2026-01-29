@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_25_160041) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_28_182341) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.text "body", size: :long
     t.datetime "created_at", null: false
@@ -59,11 +59,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_160041) do
 
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "inventory_count", default: 0
     t.string "name"
     t.bigint "productable_id"
     t.string "productable_type"
     t.datetime "updated_at", null: false
     t.index ["productable_type", "productable_id"], name: "index_products_on_productable"
+  end
+
+  create_table "subscribers", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.bigint "product_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_subscribers_on_product_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
@@ -80,4 +89,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_160041) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "subscribers", "products"
 end

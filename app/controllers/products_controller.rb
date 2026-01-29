@@ -1,8 +1,7 @@
 class ProductsController < ApplicationController
-
   # remplace la répétition par un before_action
   # before_action :authenticate_user!, only: %i[ create edit update destroy ]
-    # seulement le moment de confirmer la création était bloqué (la page affichait)
+  # seulement le moment de confirmer la création était bloqué (la page affichait)
   before_action :authenticate_user!, except: %i[ index show ]
   before_action :set_product, only: %i[ edit update destroy ]
 
@@ -37,7 +36,9 @@ class ProductsController < ApplicationController
 
   def update
     # Vérifie si le FORMULAIRE contient une nouvelle image pour le produit
-    if params[:product][:image_description_attributes][:image].present?
+    
+    if params[:product][:image_description_attributes]&.[](:image).present?
+    # if params[:product][:image_description_attributes][:image].present?
     # if params[:product][:featured_image].present?
       # Alors Si le produit avait déjà une image attachée, on la supprime
       # @product.featured_image.purge if @product.featured_image.attached?
@@ -63,7 +64,7 @@ class ProductsController < ApplicationController
   private
     def product_params
       # params.expect(product: [ :name, :description, :featured_image ]) # anceinne version
-      params.expect(product: [:name, :description, image_description_attributes: [:id, :image]])
+      params.expect(product: [:name, :description, :inventory_count, image_description_attributes: [:id, :image]])
 
       # params.require(:product).permit(:name, :description, image_description_attributes: [:id, :image])
     end

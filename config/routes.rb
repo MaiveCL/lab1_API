@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "products#index"
-  resources :products
+  
+  resources :products do
+    resources :subscribers, only: [ :create ]
+  end
+    resource :unsubscribe, only: [ :show ]
   # =======================================
   # get "/products", to: "products#index"
   # get "/products/new", to: "products#new"
