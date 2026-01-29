@@ -1,7 +1,6 @@
 require "test_helper"
 
 class ProductTest < ActiveSupport::TestCase
-
   include ActionMailer::TestHelper
 
   test "sends email notifications when back in stock" do
@@ -14,7 +13,7 @@ class ProductTest < ActiveSupport::TestCase
       product.update(inventory_count: 99)
     end
   end
-  
+
   # test "the truth" do
   #   assert true
   # end

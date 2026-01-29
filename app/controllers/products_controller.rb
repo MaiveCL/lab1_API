@@ -36,16 +36,16 @@ class ProductsController < ApplicationController
 
   def update
     # Vérifie si le FORMULAIRE contient une nouvelle image pour le produit
-    
+
     if params[:product][:image_description_attributes]&.[](:image).present?
-    # if params[:product][:image_description_attributes][:image].present?
-    # if params[:product][:featured_image].present?
+      # if params[:product][:image_description_attributes][:image].present?
+      # if params[:product][:featured_image].present?
       # Alors Si le produit avait déjà une image attachée, on la supprime
       # @product.featured_image.purge if @product.featured_image.attached?
       @product.image_description.image.purge if @product.image_description&.image&.attached?
-      # purge supprime tout : l'attachement, blob + fichier réel 
-        # sauf si le fichier est utilisé ailleurs, il supprime juste l'attachement car BLOB a des protections
-  end
+      # purge supprime tout : l'attachement, blob + fichier réel
+      # sauf si le fichier est utilisé ailleurs, il supprime juste l'attachement car BLOB a des protections
+    end
 
     # Met à jour le produit avec tous les paramètres envoyés par le formulaire
     if @product.update(product_params)
@@ -64,7 +64,7 @@ class ProductsController < ApplicationController
   private
     def product_params
       # params.expect(product: [ :name, :description, :featured_image ]) # anceinne version
-      params.expect(product: [:name, :description, :inventory_count, image_description_attributes: [:id, :image]])
+      params.expect(product: [ :name, :description, :inventory_count, image_description_attributes: [ :id, :image ] ])
 
       # params.require(:product).permit(:name, :description, image_description_attributes: [:id, :image])
     end

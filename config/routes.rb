@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "products#index"
-  
+  #
   resources :products do
     resources :subscribers, only: [ :create ]
   end
@@ -29,6 +29,4 @@ Rails.application.routes.draw do
   # put "/products/:id", to: "products#update"
   # delete "/products/:id", to: "products#destroy"
   # =======================================
-
-
 end
