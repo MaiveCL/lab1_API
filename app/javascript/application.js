@@ -4,3 +4,6 @@ import "controllers"
 
 import "trix"
 import "@rails/actiontext"
+
+// Désactive Turbo Drive (navigation automatique)
+Turbo.session.drive = false

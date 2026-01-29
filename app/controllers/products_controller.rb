@@ -5,12 +5,34 @@ class ProductsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
   before_action :set_product, only: %i[ edit update destroy ]
 
+  # invalider la cache après modification
+  after_action :expire_product_cache, only: %i[create update destroy]
+
   def index
-    @products = Product.all
+    # @products = Product.all
+    # CACHING :
+    @products = Rails.cache.fetch("products/all") do
+      Product.all.to_a
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @products }
+    end
   end
 
   def show
-    @product = Product.find(params[:id])
+    # @product = Product.find(params[:id])
+    # CACHING
+    key = "product/#{params[:id]}"
+    @product = Rails.cache.fetch(key) do
+      Product.find(params[:id])
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @product }
+    end
   end
 
   def new
@@ -21,10 +43,17 @@ class ProductsController < ApplicationController
   def create
     @product = current_user.products.build(product_params)
 
-    if @product.save
-      redirect_to @product
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @product.save
+        format.html { redirect_to @product }
+        format.json { 
+          render json: @product.slice(:id, :name, :description, :inventory_count), 
+                status: :created 
+        }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -48,16 +77,24 @@ class ProductsController < ApplicationController
     end
 
     # Met à jour le produit avec tous les paramètres envoyés par le formulaire
-    if @product.update(product_params)
-      redirect_to @product
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @product.update(product_params)
+        format.html { redirect_to @product }
+        format.json { render json: @product }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   def destroy
     @product.destroy
-    redirect_to products_path
+
+    respond_to do |format|
+      format.html { redirect_to products_path }
+      format.json { head :no_content }
+    end
   end
 
   # protection contre les envoies indésirables pour create et update
@@ -71,5 +108,13 @@ class ProductsController < ApplicationController
 
     def set_product
       @product = current_user.products.find(params[:id])
+    end
+
+    def expire_product_cache
+      # invalide la liste complète
+      Rails.cache.delete("products/all")
+      
+      # invalide le cache du produit individuel si @product existe
+      Rails.cache.delete("product/#{@product.id}") if @product
     end
 end

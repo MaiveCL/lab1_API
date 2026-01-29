@@ -3,7 +3,11 @@ class SubscribersController < ApplicationController
 
   def create
     @product.subscribers.where(subscriber_params).first_or_create
-    redirect_to @product, notice: "You are now subscribed."
+    
+    respond_to do |format|
+      format.html { redirect_to @product, notice: "You are now subscribed." }
+      format.json { render json: @subscriber, status: :created }
+    end
   end
 
   private
