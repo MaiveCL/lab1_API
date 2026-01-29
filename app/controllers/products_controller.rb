@@ -46,9 +46,9 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product }
-        format.json { 
-          render json: @product.slice(:id, :name, :description, :inventory_count), 
-                status: :created 
+        format.json {
+          render json: @product.slice(:id, :name, :description, :inventory_count),
+                status: :created
         }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -113,7 +113,7 @@ class ProductsController < ApplicationController
     def expire_product_cache
       # invalide la liste complète
       Rails.cache.delete("products/all")
-      
+
       # invalide le cache du produit individuel si @product existe
       Rails.cache.delete("product/#{@product.id}") if @product
     end

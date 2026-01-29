@@ -3,7 +3,7 @@ class UnsubscribesController < ApplicationController
 
   def show
     @subscriber&.destroy
-    
+
     respond_to do |format|
       format.html { redirect_to root_path, notice: "Unsubscribed successfully." }
       format.json { head :no_content }
