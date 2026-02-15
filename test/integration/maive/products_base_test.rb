@@ -1,5 +1,7 @@
 require "test_helper"
 
+# rails test test/integration/maive -v
+
 class ProductsBaseTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 

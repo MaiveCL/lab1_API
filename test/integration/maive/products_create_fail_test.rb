@@ -20,3 +20,5 @@ class ProductsCreateFailTest < ProductsBaseTest
     assert_response :unprocessable_entity
     end
 end
+
+# ATTENTION assert_response doit être significatif, utiliser des assert plus précis pour que le user sache
